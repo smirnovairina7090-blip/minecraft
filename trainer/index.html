@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Storm Lab - тренажёр первого Minecraft-мода</title>
+<style>
+:root{--bg:#07111f;--panel:#0d1b2d;--panel2:#11243b;--line:#274766;--text:#eaf7ff;--muted:#9bb4c8;--cyan:#52e8ff;--violet:#a58cff;--green:#5ff0a4;--yellow:#ffd86b;--red:#ff758a;--shadow:0 18px 50px rgba(0,0,0,.35)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 20% 0,#173456 0,#07111f 34%,#050b13 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5}button,input,select{font:inherit}.wrap{width:min(1180px,calc(100% - 28px));margin:auto}.hero{padding:38px 0 24px}.badge{display:inline-flex;gap:8px;align-items:center;padding:7px 11px;border:1px solid #31516f;border-radius:999px;background:#0b1a2b;color:#bdefff;font-size:13px}.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:20px;align-items:stretch;margin-top:18px}.hero h1{font-size:clamp(34px,6vw,72px);line-height:.98;margin:10px 0 16px;letter-spacing:-.04em}.hero h1 span{color:var(--cyan);text-shadow:0 0 28px rgba(82,232,255,.35)}.lead{font-size:18px;color:#c6d8e8;max-width:760px}.window{background:linear-gradient(180deg,rgba(17,36,59,.96),rgba(10,23,38,.96));border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}.bar{height:38px;display:flex;align-items:center;gap:7px;padding:0 12px;border-bottom:1px solid var(--line);background:#0a1727}.dot{width:10px;height:10px;border-radius:50%}.d1{background:#ff6f7d}.d2{background:#ffd46a}.d3{background:#5fe09d}.bar b{font-size:12px;color:#9fc3db;margin-left:6px}.window-body{padding:18px}.storm-preview{position:relative;min-height:300px;background:linear-gradient(#173b61 0 55%,#1b3b26 55% 68%,#3d2f23 68%);overflow:hidden}.storm-preview:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 49%,rgba(255,255,255,.03) 50%,transparent 51%),linear-gradient(transparent 49%,rgba(255,255,255,.03) 50%,transparent 51%);background-size:32px 32px}.player{position:absolute;left:13%;bottom:24%;width:34px;height:76px;background:#46a2d5;box-shadow:0 0 0 8px #234763 inset}.core{position:absolute;left:23%;bottom:45%;width:24px;height:24px;transform:rotate(45deg);background:#8d6fff;box-shadow:0 0 18px #9a79ff,0 0 0 4px #c87c42}.bolt{position:absolute;left:29%;top:42%;width:52%;height:4px;background:linear-gradient(90deg,var(--cyan),#fff,var(--cyan));transform:rotate(-8deg);transform-origin:left;box-shadow:0 0 14px var(--cyan)}.bolt:after{content:"";position:absolute;right:-10px;top:-35px;width:74px;height:74px;border:3px solid var(--cyan);border-radius:50%;box-shadow:0 0 28px var(--cyan),inset 0 0 22px #8effff}.mob{position:absolute;right:17%;bottom:24%;width:34px;height:62px;background:#65af62;transform:rotate(14deg)}.mini{color:var(--muted);font-size:13px}.progress-card{padding:16px;margin-top:18px}.progress-top{display:flex;justify-content:space-between;gap:12px;align-items:center}.track{height:11px;background:#06101b;border-radius:999px;border:1px solid #1f3b55;overflow:hidden;margin-top:10px}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:.3s}.layout{display:grid;grid-template-columns:260px 1fr;gap:18px;padding:18px 0 70px}.side{position:sticky;top:14px;align-self:start;padding:12px}.side button{width:100%;text-align:left;background:transparent;border:0;color:#aac0d3;padding:10px 12px;border-radius:10px;cursor:pointer}.side button:hover,.side button.active{background:#132942;color:#fff}.side .sep{height:1px;background:#24425f;margin:9px 6px}.section{margin-bottom:18px}.section h2{font-size:30px;margin:0 0 8px}.section h3{margin:0 0 8px}.section p{color:#c6d8e8}.mission{border-left:4px solid var(--cyan)}.mission .window-body{padding:20px}.tag{display:inline-flex;padding:4px 8px;border-radius:7px;background:#18324e;border:1px solid #2e5475;color:#ccecff;font-size:12px;margin-right:6px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{background:#0a1929;border:1px solid #23435f;border-radius:14px;padding:15px}.card strong{display:block;margin-bottom:5px}.file{cursor:pointer;transition:.18s}.file:hover{transform:translateY(-2px);border-color:#4bcfe5}.file code{color:var(--cyan)}.modal{position:fixed;inset:0;background:rgba(1,5,10,.78);display:none;place-items:center;padding:18px;z-index:10}.modal.open{display:grid}.modal-box{width:min(760px,100%);max-height:85vh;overflow:auto}.close{margin-left:auto;border:0;background:transparent;color:white;font-size:24px;cursor:pointer}.code{background:#050b12;border:1px solid #203c56;border-radius:12px;padding:14px;overflow:auto;color:#d5e9f5;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap}.hl{color:#65e9ff}.val{color:#ffd875}.com{color:#6f8ca1}.task{display:flex;gap:10px;align-items:flex-start;margin:10px 0;padding:12px;border-radius:12px;background:#0b1a2a;border:1px solid #1e3d58}.task input{margin-top:5px;accent-color:#4be7ff}.ok{border-color:#23664c;background:#0b241c}.quiz button,.choice{display:block;width:100%;text-align:left;margin:8px 0;padding:10px 12px;border-radius:10px;border:1px solid #2b4c68;background:#0c1c2d;color:white;cursor:pointer}.quiz button:hover,.choice:hover{border-color:#56dff4}.choice.good{border-color:#49d895;background:#102b21}.choice.bad{border-color:#ff7184;background:#30151d}.lab{display:grid;grid-template-columns:1fr 1fr;gap:18px}.controls label{display:block;margin:13px 0;color:#bdd1df}.controls input[type=range]{width:100%;accent-color:#55e7ff}.readout{float:right;color:var(--yellow);font-weight:700}.sim{min-height:320px;position:relative;background:linear-gradient(#122d4c 0 58%,#263c25 58% 68%,#3a2d22 68%);border-radius:14px;overflow:hidden;border:1px solid #24445f}.sim .beam{position:absolute;left:19%;top:44%;height:3px;width:58%;background:var(--beam,#52e8ff);box-shadow:0 0 12px var(--beam,#52e8ff);transform:rotate(-7deg);transform-origin:left}.sim .impact{position:absolute;right:16%;top:34%;width:80px;height:80px;border:3px solid var(--impact,#a58cff);border-radius:50%;box-shadow:0 0 30px var(--impact,#a58cff)}.sim .p{position:absolute;left:12%;bottom:22%;width:30px;height:64px;background:#41a1d1}.sim .m{position:absolute;right:12%;bottom:21%;width:32px;height:58px;background:#6aaa60;transform:translateX(var(--push,0px)) rotate(var(--rot,0deg));transition:.3s}.recipe{display:grid;grid-template-columns:repeat(3,64px);gap:5px;justify-content:center}.slot{height:64px;border:2px solid #56677a;border-top-color:#1c2632;border-left-color:#1c2632;background:#293541;display:grid;place-items:center;font-size:28px;cursor:pointer}.slot.active{outline:3px solid var(--cyan)}.terminal{background:#03080d;border-radius:12px;border:1px solid #1a3c34;padding:14px;color:#75ffbb;font:13px/1.7 ui-monospace,monospace}.pill{display:inline-block;padding:5px 9px;border-radius:999px;border:1px solid #2c4e69;color:#bbd3e5;font-size:12px}.answer{margin-top:10px;padding:10px;border-radius:10px;display:none}.answer.show{display:block}.success{background:#0d2a20;border:1px solid #2d8a65;color:#b6f5d7}.warn{background:#302515;border:1px solid #896827;color:#ffe6a2}.footer{text-align:center;color:#829db1;padding:30px 0 50px}@media(max-width:900px){.hero-grid,.layout,.lab{grid-template-columns:1fr}.side{position:relative;top:auto}.grid3{grid-template-columns:1fr 1fr}}@media(max-width:620px){.grid2,.grid3{grid-template-columns:1fr}.hero{padding-top:24px}.section h2{font-size:25px}.window-body{padding:14px}}
+</style>
+</head>
+<body>
+<div class="wrap hero">
+  <span class="badge">⚡ MINECRAFT MOD LAB · FABRIC 1.21.1 · JAVA 21</span>
+  <div class="hero-grid">
+    <div>
+      <h1>Твой первый <span>WOW-мод</span></h1>
+      <p class="lead">Интерактивный рабочий лист по Ядру Бури. Здесь ты не просто повторишь код, а разберёшь, как Minecraft узнаёт о новом объекте, откуда берёт его внешний вид, где хранит рецепт и кто программирует суперсилу.</p>
+      <div class="progress-card window">
+        <div class="progress-top"><b>Прогресс лаборатории</b><span id="progressText">0%</span></div>
+        <div class="track"><div class="fill" id="progressFill"></div></div>
+        <div class="mini" style="margin-top:8px">Отмечай задания. Прогресс сохраняется в браузере.</div>
+      </div>
+    </div>
+    <div class="window">
+      <div class="bar"><i class="dot d1"></i><i class="dot d2"></i><i class="dot d3"></i><b>Minecraft · Storm Lab</b></div>
+      <div class="storm-preview"><div class="player"></div><div class="core"></div><div class="bolt"></div><div class="mob"></div></div>
+      <div class="window-body"><b>Ядро Бури</b><div class="mini">ПКМ → луч → молния → искры → ударная волна</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap layout">
+  <aside class="window side">
+    <button class="active" onclick="go('start',this)">00 · Старт</button>
+    <button onclick="go('map',this)">01 · Карта проекта</button>
+    <button onclick="go('register',this)">02 · Регистрация</button>
+    <button onclick="go('resources',this)">03 · Ресурсы и модель</button>
+    <button onclick="go('recipe',this)">04 · Рецепт</button>
+    <button onclick="go('settings',this)">05 · Панель силы</button>
+    <button onclick="go('logic',this)">06 · Java-логика</button>
+    <button onclick="go('github',this)">07 · GitHub → JAR</button>
+    <div class="sep"></div>
+    <button onclick="go('final',this)">🏆 Финальный челлендж</button>
+  </aside>
+
+  <main>
+    <section id="start" class="section window mission"><div class="window-body">
+      <span class="tag">МИССИЯ 00</span><span class="tag">5 МИН</span>
+      <h2>Сначала предскажи мод</h2>
+      <p>До открытия файлов сформулируй гипотезу: из каких частей вообще может состоять новый предмет Minecraft?</p>
+      <div class="grid3">
+        <div class="card"><strong>Внешний вид</strong><span class="mini">Кто решает, как предмет выглядит?</span></div>
+        <div class="card"><strong>Данные</strong><span class="mini">Где хранится имя и рецепт?</span></div>
+        <div class="card"><strong>Поведение</strong><span class="mini">Кто говорит предмету, что делать по ПКМ?</span></div>
+      </div>
+      <label class="task"><input type="checkbox" data-progress><span><b>Запусти готовый мод</b><br><span class="mini">Найди Ядро Бури в разделе инструментов и примени его по ПКМ.</span></span></label>
+      <label class="task"><input type="checkbox" data-progress><span><b>Опиши эффект тремя глаголами</b><br><span class="mini">Например: выпускает, вызывает, отбрасывает.</span></span></label>
+    </div></section>
+
+    <section id="map" class="section window"><div class="window-body">
+      <span class="tag">МИССИЯ 01</span><span class="tag">АРХИТЕКТУРА</span>
+      <h2>Карта проекта</h2>
+      <p>Нажимай на карточки. Твоя цель - научиться по желанию игрока сразу понимать, какой файл открыть.</p>
+      <div class="grid2">
+        <div class="card file" onclick="openFile('ModSettings.java','Безопасная панель экспериментов','Здесь лежат дальность, перезарядка, радиус волны, сила отбрасывания и тип частиц. Для первого урока почти все эксперименты делаем здесь.')"><code>ModSettings.java</code><strong>Настройки силы</strong><span class="mini">Меняем цифры и частицы</span></div>
+        <div class="card file" onclick="openFile('StormCoreItem.java','Поведение предмета','Главная Java-логика. Метод use() запускается, когда игрок использует предмет. В нём создаются луч, молния, частицы, отбрасывание и cooldown.')"><code>StormCoreItem.java</code><strong>Что делает ПКМ</strong><span class="mini">Настоящая механика</span></div>
+        <div class="card file" onclick="openFile('ModItems.java','Регистрация','Minecraft должен получить ID предмета. Здесь создаётся storm_core и регистрируется в реестре предметов.')"><code>ModItems.java</code><strong>Знакомство с Minecraft</strong><span class="mini">Создаём и регистрируем</span></div>
+        <div class="card file" onclick="openFile('ru_ru.json','Перевод','Внутренний ID остаётся storm_core, а игрок видит красивое имя Ядро Бури.')"><code>lang/ru_ru.json</code><strong>Название</strong><span class="mini">Что увидит игрок</span></div>
+        <div class="card file" onclick="openFile('storm_core.json','3D-модель','Модель уже объёмная. Она собирается из нескольких кубоидов и использует ванильные текстуры аметиста и меди.')"><code>models/item/storm_core.json</code><strong>Внешний вид</strong><span class="mini">3D без Blockbench</span></div>
+        <div class="card file" onclick="openFile('storm_core.json · recipe','Рецепт','JSON описывает форму крафта, ингредиенты и результат.')"><code>data/storm_lab/recipe/...</code><strong>Крафт</strong><span class="mini">Какие предметы нужны</span></div>
+      </div>
+      <div class="quiz" style="margin-top:16px"><b>Быстрая проверка: хочу изменить дальность молнии. Куда иду?</b>
+        <button onclick="checkChoice(this,false)">storm_core.json</button><button onclick="checkChoice(this,true)">ModSettings.java</button><button onclick="checkChoice(this,false)">ru_ru.json</button>
+      </div>
+      <label class="task"><input type="checkbox" data-progress><span><b>Я могу объяснить разницу между Java, JSON и lang-файлом.</b></span></label>
+    </div></section>
+
+    <section id="register" class="section window"><div class="window-body">
+      <span class="tag">МИССИЯ 02</span><span class="tag">REGISTRY</span>
+      <h2>Как Minecraft узнаёт о предмете</h2>
+      <div class="code"><span class="com">// создаём предмет</span>
+public static final Item STORM_CORE = register(
+    new StormCoreItem(new Item.Properties().stacksTo(1)),
+    <span class="val">"storm_core"</span>
+);
+
+<span class="com">// даём Minecraft уникальный адрес</span>
+ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(
+    <span class="hl">StormLabMod.MOD_ID</span>, id
+);
+Registry.register(BuiltInRegistries.ITEM, itemId, item);</div>
+      <p>Итоговый адрес предмета: <span class="pill">storm_lab:storm_core</span>. Первая часть - ID мода, вторая - ID предмета.</p>
+      <div class="grid2"><div class="card"><strong>Внутреннее имя</strong><code>storm_core</code><span class="mini">Используют код, модель, рецепт.</span></div><div class="card"><strong>Имя для игрока</strong><code>Ядро Бури</code><span class="mini">Берётся из ru_ru.json.</span></div></div>
+      <label class="task"><input type="checkbox" data-progress><span><b>Найди в проекте строку <code>storm_core</code> минимум в трёх разных файлах.</b></span></label>
+    </div></section>
+
+    <section id="resources" class="section window"><div class="window-body">
+      <span class="tag">МИССИЯ 03</span><span class="tag">3D + RESOURCES</span>
+      <h2>Почему отдельная модель сейчас не нужна</h2>
+      <p>У предмета уже есть JSON-модель. Minecraft умеет собирать 3D-форму из кубоидов, поэтому для первого мода Blockbench можно вообще не открывать. Это полезно: ученик сначала понимает структуру мода, а уже потом занимается моделингом.</p>
+      <div class="grid2">
+        <div class="card"><strong>Базовый путь</strong><div class="code">models/item/storm_core.json
+textures → minecraft:block/amethyst_block
+textures → minecraft:block/copper_block</div><span class="mini">Работает сразу, дополнительных файлов не требует.</span></div>
+        <div class="card"><strong>Вау-апгрейд позже</strong><div class="code">Blockbench
+↓ Export Java Block/Item Model
+storm_core.json
++ свои PNG</div><span class="mini">Это отдельная дополнительная миссия.</span></div>
+      </div>
+      <div class="quiz" style="margin-top:15px"><b>Что отвечает за вид предмета в руке?</b><button onclick="checkChoice(this,false)">recipe JSON</button><button onclick="checkChoice(this,true)">item model JSON</button><button onclick="checkChoice(this,false)">GitHub Actions</button></div>
+      <label class="task"><input type="checkbox" data-progress><span><b>Открой модель и найди две используемые текстуры: аметист и медь.</b></span></label>
+    </div></section>
+
+    <section id="recipe" class="section window"><div class="window-body">
+      <span class="tag">МИССИЯ 04</span><span class="tag">JSON</span>
+      <h2>Конструктор рецепта</h2>
+      <p>Нажимай на ячейки и придумай новый рецепт. Это симуляция: после неё ты уже знаешь, что менять в настоящем JSON.</p>
+      <div class="recipe" id="recipeGrid"></div>
+      <div style="text-align:center;margin:12px"><select id="ingredient"><option value="💎">💎 алмаз</option><option value="🔶">🔶 медь</option><option value="💜">💜 аметист</option><option value="🔥">🔥 стержень ифрита</option><option value="🟣">🟣 жемчуг Эндера</option><option value="">пусто</option></select></div>
+      <div class="code" id="recipeCode"></div>
+      <label class="task"><input type="checkbox" data-progress><span><b>Сделай собственный рецепт из минимум трёх типов ингредиентов.</b></span></label>
+    </div></section>
+
+    <section id="settings" class="section window"><div class="window-body">
+      <span class="tag">МИССИЯ 05</span><span class="tag">ЭКСПЕРИМЕНТ</span>
+      <h2>Панель суперсилы</h2>
+      <p>Сначала меняй параметры здесь и наблюдай за симуляцией. Потом перенеси понравившиеся значения в настоящий <code>ModSettings.java</code>.</p>
+      <div class="lab">
+        <div class="controls card">
+          <label>Дальность <span class="readout" id="rangeOut">12</span><input id="range" type="range" min="5" max="30" value="12"></label>
+          <label>Радиус волны <span class="readout" id="radiusOut">5.0</span><input id="radius" type="range" min="1" max="10" step=".5" value="5"></label>
+          <label>Сила отбрасывания <span class="readout" id="powerOut">1.7</span><input id="power" type="range" min="0" max="4" step=".1" value="1.7"></label>
+          <label>Перезарядка, сек <span class="readout" id="coolOut">3</span><input id="cool" type="range" min="0" max="10" value="3"></label>
+          <label>Частицы
+            <select id="particle"><option value="electric">ELECTRIC_SPARK</option><option value="flame">FLAME</option><option value="snow">SNOWFLAKE</option><option value="portal">PORTAL</option></select>
+          </label>
+          <button class="choice" onclick="fire()">⚡ Испытать способность</button>
+        </div>
+        <div class="sim" id="sim"><div class="p"></div><div class="beam"></div><div class="impact"></div><div class="m"></div></div>
+      </div>
+      <div class="code" id="settingsCode" style="margin-top:14px"></div>
+      <label class="task"><input type="checkbox" data-progress><span><b>Создай свою стихию и выпиши четыре выбранных параметра.</b></span></label>
+      <label class="task"><input type="checkbox" data-progress><span><b>До запуска настоящего мода предскажи, что изменится визуально и в балансе.</b></span></label>
+    </div></section>
+
+    <section id="logic" class="section window"><div class="window-body">
+      <span class="tag">МИССИЯ 06</span><span class="tag">JAVA</span>
+      <h2>Анатомия ПКМ</h2>
+      <p>Главное здесь не запомнить весь синтаксис. Нужно научиться читать механику как последовательность событий.</p>
+      <div class="grid2">
+        <div class="card"><strong>1. use()</strong><span class="mini">Игрок нажал ПКМ.</span></div>
+        <div class="card"><strong>2. target</strong><span class="mini">Выбираем точку впереди игрока.</span></div>
+        <div class="card"><strong>3. sendParticles()</strong><span class="mini">Рисуем путь электрического луча.</span></div>
+        <div class="card"><strong>4. LightningBolt</strong><span class="mini">Создаём настоящую сущность молнии.</span></div>
+        <div class="card"><strong>5. getEntitiesOfClass()</strong><span class="mini">Ищем существ рядом.</span></div>
+        <div class="card"><strong>6. push()</strong><span class="mini">Отбрасываем их от эпицентра.</span></div>
+        <div class="card"><strong>7. playSound()</strong><span class="mini">Добавляем звук.</span></div>
+        <div class="card"><strong>8. addCooldown()</strong><span class="mini">Запрещаем спамить силой.</span></div>
+      </div>
+      <div class="quiz" style="margin-top:15px"><b>Если убрать cooldown, что изменится?</b><button onclick="checkChoice(this,false)">Исчезнет 3D-модель</button><button onclick="checkChoice(this,true)">Силу можно будет использовать почти без паузы</button><button onclick="checkChoice(this,false)">Minecraft забудет предмет</button></div>
+      <label class="task"><input type="checkbox" data-progress><span><b>Расскажи механику без кода одной цепочкой из 6-8 шагов.</b></span></label>
+    </div></section>
+
+    <section id="github" class="section window"><div class="window-body">
+      <span class="tag">МИССИЯ 07</span><span class="tag">GITHUB ACTIONS</span>
+      <h2>Как исходники превращаются в .jar</h2>
+      <div class="terminal">$ git commit "My first Minecraft mod"
+✓ GitHub получил изменения
+→ Actions / Build Storm Lab Mod
+→ Java 21
+→ gradle build
+✓ build/libs/storm-lab-template-1.0.0.jar
+→ artifact: storm-lab-minecraft-1.21.1</div>
+      <div class="grid3" style="margin-top:14px"><div class="card"><strong>1 · Commit</strong><span class="mini">Сохраняем изменения в истории проекта.</span></div><div class="card"><strong>2 · Actions</strong><span class="mini">Сервер GitHub собирает проект.</span></div><div class="card"><strong>3 · Artifact</strong><span class="mini">Получаем готовый JAR для папки mods.</span></div></div>
+      <label class="task"><input type="checkbox" data-progress><span><b>Сделай одно безопасное изменение в ModSettings.java и Commit changes.</b></span></label>
+      <label class="task"><input type="checkbox" data-progress><span><b>Найди успешную зелёную сборку в Actions.</b></span></label>
+      <label class="task"><input type="checkbox" data-progress><span><b>Скачай artifact и найди внутри .jar.</b></span></label>
+    </div></section>
+
+    <section id="final" class="section window mission"><div class="window-body">
+      <span class="tag">FINAL BOSS</span>
+      <h2>Собери собственный первый мод</h2>
+      <p>Теперь не повторяй Ядро Бури. Преврати шаблон во что-то своё.</p>
+      <div class="grid2">
+        <div class="card"><strong>Шаг 1 · Концепт</strong><input id="nameInput" placeholder="Название артефакта" style="width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #34536c;background:#07121e;color:#fff"><input id="powerInput" placeholder="Что он умеет?" style="width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #34536c;background:#07121e;color:#fff"></div>
+        <div class="card"><strong>Шаг 2 · Файлы</strong><span class="mini">Изменить минимум три слоя проекта:</span><div style="margin-top:8px">① ресурс или имя<br>② JSON-рецепт<br>③ Java-настройки</div></div>
+      </div>
+      <div class="quiz" style="margin-top:16px"><b>Финальный вопрос. Где должна находиться основная логика способности?</b><button onclick="finalAnswer(this,false)">В ru_ru.json</button><button onclick="finalAnswer(this,false)">В рецепте</button><button onclick="finalAnswer(this,true)">В Java-классе предмета</button></div>
+      <div id="certificate" class="answer success"><b>🏆 Лаборатория пройдена.</b><br>Ты умеешь находить регистрацию, ресурсы, рецепт, настройки, Java-логику и путь сборки мода.</div>
+      <label class="task"><input type="checkbox" data-progress><span><b>Мой новый артефакт успешно появился в Minecraft и его способность работает.</b></span></label>
+    </div></section>
+  </main>
+</div>
+
+<div class="wrap footer">Storm Lab · учебный тренажёр первого Fabric-мода · данные прогресса хранятся только в этом браузере</div>
+
+<div class="modal" id="modal"><div class="window modal-box"><div class="bar"><i class="dot d1"></i><i class="dot d2"></i><i class="dot d3"></i><b id="modalTitle">Файл</b><button class="close" onclick="closeModal()">×</button></div><div class="window-body"><h3 id="modalHead"></h3><p id="modalText"></p></div></div></div>
+<script>
+const boxes=[...document.querySelectorAll('[data-progress]')];
+function updateProgress(){let done=boxes.filter(x=>x.checked).length,p=Math.round(done/boxes.length*100);document.getElementById('progressFill').style.width=p+'%';document.getElementById('progressText').textContent=p+'%';localStorage.setItem('storm-progress',JSON.stringify(boxes.map(x=>x.checked)))}
+let saved=JSON.parse(localStorage.getItem('storm-progress')||'[]');boxes.forEach((b,i)=>{b.checked=!!saved[i];b.addEventListener('change',updateProgress)});updateProgress();
+function go(id,btn){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.side button').forEach(x=>x.classList.remove('active'));btn.classList.add('active')}
+function openFile(t,h,txt){modalTitle.textContent=t;modalHead.textContent=h;modalText.textContent=txt;modal.classList.add('open')}
+function closeModal(){modal.classList.remove('open')}modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+function checkChoice(el,good){let q=el.parentElement;q.querySelectorAll('button').forEach(x=>x.classList.remove('good','bad'));el.classList.add(good?'good':'bad')}
+const icons=['💎','🔶','💜','🔥','🟣',''];let grid=document.getElementById('recipeGrid');for(let i=0;i<9;i++){let s=document.createElement('div');s.className='slot';s.dataset.v=i===4?'💎':i===1||i===3||i===5||i===7?'💜':'🔶';s.textContent=s.dataset.v;s.onclick=()=>{s.dataset.v=ingredient.value;s.textContent=s.dataset.v;renderRecipe()};grid.appendChild(s)}
+function renderRecipe(){let a=[...grid.children].map(x=>x.dataset.v||' ');recipeCode.textContent='pattern:\n'+a.slice(0,3).join(' ')+'\n'+a.slice(3,6).join(' ')+'\n'+a.slice(6,9).join(' ')+'\n\nresult: storm_lab:storm_core'}renderRecipe();
+const R=range,RA=radius,P=power,C=cool,PT=particle;function renderSettings(){rangeOut.textContent=R.value;radiusOut.textContent=Number(RA.value).toFixed(1);powerOut.textContent=Number(P.value).toFixed(1);coolOut.textContent=C.value;let map={electric:['#52e8ff','#a58cff','ELECTRIC_SPARK'],flame:['#ff9a52','#ffd35a','FLAME'],snow:['#dff8ff','#7fddff','SNOWFLAKE'],portal:['#bf77ff','#e08cff','PORTAL']},m=map[PT.value];sim.style.setProperty('--beam',m[0]);sim.style.setProperty('--impact',m[1]);settingsCode.textContent='RANGE = '+R.value+';\nSHOCKWAVE_RADIUS = '+Number(RA.value).toFixed(1)+';\nKNOCKBACK_POWER = '+Number(P.value).toFixed(1)+';\nCOOLDOWN_TICKS = '+(C.value*20)+';\nBEAM_PARTICLE = ParticleTypes.'+m[2]+';'}[R,RA,P,C,PT].forEach(x=>x.addEventListener('input',renderSettings));renderSettings();
+function fire(){let m=sim.querySelector('.m');let push=Math.min(90,Number(P.value)*22+Number(RA.value)*3);m.style.setProperty('--push',push+'px');m.style.setProperty('--rot',(Number(P.value)*7)+'deg');setTimeout(()=>{m.style.setProperty('--push','0px');m.style.setProperty('--rot','0deg')},700)}
+function finalAnswer(el,good){checkChoice(el,good);if(good)certificate.classList.add('show')}
+</script>
+</body>
+</html>
