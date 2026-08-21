@@ -1,0 +1,43 @@
+name: Build Storm Lab Mod
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - wow-mod-lesson-template
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Minecraft 1.21.1 mod
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v6
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: "9.5.1"
+
+      - name: Build mod
+        run: gradle build --stacktrace
+
+      - name: Upload ready JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: storm-lab-minecraft-1.21.1
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+            !build/libs/*-dev.jar
+          if-no-files-found: error
