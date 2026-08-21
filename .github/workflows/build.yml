@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - wow-mod-lesson-template
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
