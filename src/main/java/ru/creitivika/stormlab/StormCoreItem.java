@@ -13,11 +13,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class StormCoreItem extends Item {
@@ -35,13 +38,41 @@ public class StormCoreItem extends Item {
         }
 
         ServerLevel serverWorld = (ServerLevel) world;
-        BlockPos target = user.blockPosition().relative(user.getDirection(), ModSettings.RANGE);
-        Vec3 targetCenter = target.getCenter();
 
-        // 1. Электрический луч от игрока к точке удара.
+        // 1. Прицеливание. Луч идёт точно из глаз игрока через центр экрана.
         Vec3 start = user.getEyePosition();
+        Vec3 view = user.getViewVector(1.0F);
+        Vec3 maxEnd = start.add(view.scale(ModSettings.RANGE));
+
+        // Сначала проверяем блок под прицелом.
+        HitResult blockHit = user.pick(ModSettings.RANGE, 1.0F, false);
+        Vec3 targetCenter = blockHit.getLocation();
+        double blockDistanceSqr = start.distanceToSqr(targetCenter);
+
+        // Затем проверяем живую цель на той же линии прицела.
+        AABB searchBox = user.getBoundingBox()
+                .expandTowards(view.scale(ModSettings.RANGE))
+                .inflate(1.0D);
+
+        EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
+                user,
+                start,
+                maxEnd,
+                searchBox,
+                entity -> entity instanceof LivingEntity && entity != user && entity.isPickable(),
+                ModSettings.RANGE * ModSettings.RANGE
+        );
+
+        // Если моб оказался ближе блока, ударяем именно в него.
+        if (entityHit != null && start.distanceToSqr(entityHit.getLocation()) < blockDistanceSqr) {
+            targetCenter = entityHit.getLocation();
+        }
+
+        BlockPos target = BlockPos.containing(targetCenter);
+
+        // 2. Электрический луч от глаз игрока точно к выбранной точке.
         Vec3 delta = targetCenter.subtract(start);
-        int steps = Math.max(20, ModSettings.RANGE * 4);
+        int steps = Math.max(20, (int) Math.ceil(delta.length() * 4.0));
 
         for (int i = 0; i <= steps; i++) {
             double t = i / (double) steps;
@@ -50,26 +81,35 @@ public class StormCoreItem extends Item {
                     ModSettings.BEAM_PARTICLE,
                     point.x, point.y, point.z,
                     ModSettings.PARTICLES_PER_STEP,
-                    0.04, 0.04, 0.04,
-                    0.01
+                    0.035, 0.035, 0.035,
+                    0.008
             );
         }
 
-        // 2. Настоящая молния в конце луча.
+        // 3. Молния теперь визуальная: выглядит как гроза, но НЕ поджигает мир.
         LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, world);
         lightning.setPos(targetCenter);
+        lightning.setVisualOnly(true);
         world.addFreshEntity(lightning);
 
-        // 3. Искры в эпицентре.
+        // 4. Эпицентр бури: электрические искры и облако ударной волны.
         serverWorld.sendParticles(
                 ModSettings.IMPACT_PARTICLE,
-                targetCenter.x, targetCenter.y + 0.7, targetCenter.z,
+                targetCenter.x, targetCenter.y + 0.35, targetCenter.z,
                 55,
-                1.2, 0.8, 1.2,
-                0.12
+                1.15, 0.65, 1.15,
+                0.10
         );
 
-        // 4. Ударная волна отбрасывает живых существ вокруг точки попадания.
+        serverWorld.sendParticles(
+                net.minecraft.core.particles.ParticleTypes.CLOUD,
+                targetCenter.x, targetCenter.y + 0.20, targetCenter.z,
+                34,
+                1.35, 0.35, 1.35,
+                0.09
+        );
+
+        // 5. Ударная волна отбрасывает живых существ вокруг ТОЧКИ ПРИЦЕЛА.
         AABB shockwave = new AABB(target).inflate(ModSettings.SHOCKWAVE_RADIUS);
         List<LivingEntity> nearby = world.getEntitiesOfClass(
                 LivingEntity.class,
@@ -85,14 +125,14 @@ public class StormCoreItem extends Item {
             }
         }
 
-        // 5. Звук и перезарядка.
+        // 6. Гром и перезарядка.
         world.playSound(
                 null,
                 target,
                 SoundEvents.LIGHTNING_BOLT_THUNDER,
                 SoundSource.PLAYERS,
-                1.0F,
-                1.25F
+                0.9F,
+                1.2F
         );
         user.getCooldowns().addCooldown(this, ModSettings.COOLDOWN_TICKS);
 
@@ -101,8 +141,8 @@ public class StormCoreItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.literal("ПКМ - вызвать удар бури").withStyle(ChatFormatting.AQUA));
-        tooltip.add(Component.literal("Луч + молния + ударная волна").withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltip.add(Component.literal("ПКМ - удар точно по прицелу").withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.literal("Молния без пожара + ударная волна").withStyle(ChatFormatting.LIGHT_PURPLE));
         tooltip.add(Component.literal("Настройки силы лежат в ModSettings.java").withStyle(ChatFormatting.DARK_GRAY));
     }
 }
