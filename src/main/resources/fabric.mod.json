@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "storm_lab",
+  "version": "${version}",
+  "name": "Storm Lab - First WOW Mod",
+  "description": "Учебный Fabric-мод: 3D артефакт, электрический луч, молния и ударная волна.",
+  "authors": ["Creitivika"],
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ru.creitivika.stormlab.StormLabMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

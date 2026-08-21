@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " C ",
+    "ADA",
+    " C "
+  ],
+  "key": {
+    "C": {"item": "minecraft:copper_ingot"},
+    "A": {"item": "minecraft:amethyst_shard"},
+    "D": {"item": "minecraft:diamond"}
+  },
+  "result": {
+    "id": "storm_lab:storm_core",
+    "count": 1
+  }
+}
